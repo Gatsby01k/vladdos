@@ -36,12 +36,18 @@ export default function HeroScene() {
     return { bg: 10, char: 22, logo: 26, ui: 12 };
   }, [tier]);
 
+  // ✅ вместо sx.to(...) / sy.to(...)
+  const logoX = useTransform(sx, (v) => -v * strengths.logo);
+  const logoY = useTransform(sy, (v) => -v * strengths.logo);
+
+  const charX = useTransform(sx, (v) => -v * strengths.char);
+  const charY = useTransform(sy, (v) => -v * strengths.char);
+
+  const uiX = useTransform(sx, (v) => -v * strengths.ui);
+  const uiY = useTransform(sy, (v) => -v * strengths.ui);
+
   const assets = useMemo(
-    () => [
-      "/assets/hero/bg.png",
-      "/assets/hero/logo.png",
-      "/assets/hero/character.png",
-    ],
+    () => ["/assets/hero/bg.png", "/assets/hero/logo.png", "/assets/hero/character.png"],
     []
   );
 
@@ -60,13 +66,7 @@ export default function HeroScene() {
 
       {/* background scene */}
       <div className="absolute inset-0">
-        <Image
-          src="/assets/hero/bg.png"
-          alt="Background"
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src="/assets/hero/bg.png" alt="Background" fill priority className="object-cover" />
         {/* cinematic grading */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,0,60,.22),transparent_62%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.55),rgba(0,0,0,.35),rgba(0,0,0,.72))]" />
@@ -85,10 +85,7 @@ export default function HeroScene() {
       {/* parallax logo */}
       <motion.div
         className="absolute left-1/2 top-[10%] -translate-x-1/2 pointer-events-none"
-        style={{
-          x: sx.to((v) => -v * strengths.logo),
-          y: sy.to((v) => -v * strengths.logo),
-        }}
+        style={{ x: logoX, y: logoY }}
       >
         <motion.div
           initial={{ opacity: 0, y: -18 }}
@@ -110,14 +107,15 @@ export default function HeroScene() {
       {/* parallax character overlay (adds depth on top of background) */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        style={{
-          x: sx.to((v) => -v * strengths.char),
-          y: sy.to((v) => -v * strengths.char),
-        }}
+        style={{ x: charX, y: charY }}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 20 }}
-          animate={{ opacity: loaded ? 0.55 : 0, scale: loaded ? 1 : 0.96, y: loaded ? 0 : 20 }}
+          animate={{
+            opacity: loaded ? 0.55 : 0,
+            scale: loaded ? 1 : 0.96,
+            y: loaded ? 0 : 20,
+          }}
           transition={{ duration: 0.65, ease: [0.2, 0.8, 0.2, 1] }}
           className="relative w-[240px] sm:w-[320px] md:w-[380px] lg:w-[430px]"
         >
@@ -132,13 +130,7 @@ export default function HeroScene() {
       </motion.div>
 
       {/* UI hotspots */}
-      <motion.div
-        className="absolute inset-0 z-30"
-        style={{
-          x: sx.to((v) => -v * strengths.ui),
-          y: sy.to((v) => -v * strengths.ui),
-        }}
-      >
+      <motion.div className="absolute inset-0 z-30" style={{ x: uiX, y: uiY }}>
         <Hotspots />
       </motion.div>
 
