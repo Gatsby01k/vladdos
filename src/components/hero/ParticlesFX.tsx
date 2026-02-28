@@ -1,22 +1,35 @@
 "use client";
 
-import { useCallback } from "react";
-import Particles from "@tsparticles/react";
-import type { Engine } from "@tsparticles/engine";
+import { useEffect, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
 export default function ParticlesFX({ density = 1 }: { density?: number }) {
-  const init = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      if (mounted) setReady(true);
+    });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
+
+  if (!ready) return null;
 
   return (
     <Particles
-      particlesInit={init}
       options={{
         fullScreen: { enable: false },
         background: { color: { value: "transparent" } },
         fpsLimit: 60,
+
         particles: {
           number: {
             value: Math.round(120 * density),
@@ -32,14 +45,12 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
             outModes: { default: "out" },
           },
         },
+
         interactivity: {
-          events: {
-            onHover: { enable: true, mode: ["repulse"] },
-          },
-          modes: {
-            repulse: { distance: 70, duration: 0.2 },
-          },
+          events: { onHover: { enable: true, mode: ["repulse"] } },
+          modes: { repulse: { distance: 70, duration: 0.2 } },
         },
+
         detectRetina: true,
       }}
       className="absolute inset-0"
