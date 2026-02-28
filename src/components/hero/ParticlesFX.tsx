@@ -17,7 +17,6 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
         fullScreen: { enable: false },
         background: { color: { value: "transparent" } },
         fpsLimit: 60,
-
         particles: {
           number: {
             value: Math.round(120 * density),
@@ -26,14 +25,21 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
           color: { value: ["#ff003c", "#ffffff"] },
           opacity: { value: { min: 0.04, max: 0.16 } },
           size: { value: { min: 1, max: 2 } },
-          move: { enable: true, speed: 0.28, direction: "none", outModes: { default: "out" } },
+          move: {
+            enable: true,
+            speed: 0.28,
+            direction: "none",
+            outModes: { default: "out" },
+          },
         },
-
         interactivity: {
-          events: { onHover: { enable: true, mode: ["repulse"] } },
-          modes: { repulse: { distance: 70, duration: 0.2 } },
+          events: {
+            onHover: { enable: true, mode: ["repulse"] },
+          },
+          modes: {
+            repulse: { distance: 70, duration: 0.2 },
+          },
         },
-
         detectRetina: true,
       }}
       className="absolute inset-0"
