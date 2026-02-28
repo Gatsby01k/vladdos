@@ -18,7 +18,10 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
         background: { color: { value: "transparent" } },
         fpsLimit: 60,
         particles: {
-          number: { value: Math.round(120 * density), density: { enable: true, area: 900 } },
+          number: {
+  value: Math.round(120 * density),
+  density: { enable: true, width: 900, height: 900 },
+},
           color: { value: ["#ff003c", "#ffffff"] },
           opacity: { value: { min: 0.04, max: 0.16 } },
           size: { value: { min: 1, max: 2 } },
