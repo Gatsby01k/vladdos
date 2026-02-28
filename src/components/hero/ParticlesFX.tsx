@@ -12,7 +12,7 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
 
   return (
     <Particles
-      init={init}
+      particlesInit={init}
       options={{
         fullScreen: { enable: false },
         background: { color: { value: "transparent" } },
@@ -26,13 +26,7 @@ export default function ParticlesFX({ density = 1 }: { density?: number }) {
           color: { value: ["#ff003c", "#ffffff"] },
           opacity: { value: { min: 0.04, max: 0.16 } },
           size: { value: { min: 1, max: 2 } },
-
-          move: {
-            enable: true,
-            speed: 0.28,
-            direction: "none",
-            outModes: { default: "out" },
-          },
+          move: { enable: true, speed: 0.28, direction: "none", outModes: { default: "out" } },
         },
 
         interactivity: {
